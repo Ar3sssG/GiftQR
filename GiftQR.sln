@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GiftQR", "GiftQR\GiftQR.csproj", "{BAC51215-E411-43DA-8669-2B20AE007CB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiftQR", "GiftQR\GiftQR.csproj", "{BAC51215-E411-43DA-8669-2B20AE007CB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GiftQRDataAccess", "GiftQRDataAccess\GiftQRDataAccess.csproj", "{E6F58ADA-CD54-4987-8143-2643B8DB6D54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiftQRDataAccess", "GiftQRDataAccess\GiftQRDataAccess.csproj", "{E6F58ADA-CD54-4987-8143-2643B8DB6D54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GiftQRModels", "GiftQRModels\GiftQRModels.csproj", "{682A7ACF-99F7-46F2-BB49-9F6E44C26C3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiftQRModels", "GiftQRModels\GiftQRModels.csproj", "{682A7ACF-99F7-46F2-BB49-9F6E44C26C3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GiftQRApp", "GiftQRApp\GiftQRApp.csproj", "{939FA7BC-7416-4232-8BB1-EAB07D2D3E00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GiftQRApp", "GiftQRApp\GiftQRApp.csproj", "{939FA7BC-7416-4232-8BB1-EAB07D2D3E00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GQRCommon", "GQRCommon\GQRCommon.csproj", "{B6EF753C-91F6-49AA-9480-A065518C895C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{939FA7BC-7416-4232-8BB1-EAB07D2D3E00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{939FA7BC-7416-4232-8BB1-EAB07D2D3E00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{939FA7BC-7416-4232-8BB1-EAB07D2D3E00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6EF753C-91F6-49AA-9480-A065518C895C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6EF753C-91F6-49AA-9480-A065518C895C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6EF753C-91F6-49AA-9480-A065518C895C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6EF753C-91F6-49AA-9480-A065518C895C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

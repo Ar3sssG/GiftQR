@@ -1,23 +1,31 @@
+using GiftQR.Extensions;
 using GiftQRDataAccess.DAL;
 using GiftQRDataAccess.DAL.Contexts;
 using GiftQRDataAccess.DAL.Interfaces;
 using GiftQRDataAccess.Identity;
+using GQRCommon.Helpers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace GiftQR
@@ -48,59 +56,44 @@ namespace GiftQR
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireDigit = false;
-            })
-              .AddEntityFrameworkStores<GQRContext>();
+            }).AddEntityFrameworkStores<GQRContext>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            //{
+            //    //options.TokenValidationParameters = new TokenValidationParameters
+            //    //{
+            //    //    ValidateIssuer = true,
+            //    //    ValidateAudience = true,
+            //    //    ValidateLifetime = true,
+            //    //    ValidateIssuerSigningKey = true,
+            //    //    ValidIssuer = "213",/*Configuration["Jwt:Issuer"],*/
+            //    //    ValidAudience = "123",/*Configuration["Jwt:Issuer"],*/
+            //    //    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("211"/*Configuration["Jwt:Key"]*/))
+            //    //};
+            //});
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = AuthOptions.ISSUER,
+                    ValidateAudience = true,
+                    ValidAudience = AuthOptions.AUDIENCE,
+                    ValidateLifetime = true,
+                    IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                    ValidateIssuerSigningKey = true,
+                };
+            });
+            services.AddAuthorization();
             services.AddControllers();
 
-            services.AddApiVersioning(options =>
-            {
-                options.AssumeDefaultVersionWhenUnspecified = true;
-                options.DefaultApiVersion = new ApiVersion(1, 0);
-                options.ApiVersionReader = new MediaTypeApiVersionReader();
-            });
-
-            services.AddVersionedApiExplorer(options =>
-            {
-                options.GroupNameFormat = "'v'VVV";
-                options.SubstituteApiVersionInUrl = true;
-            });
-
-            services.AddSwaggerGen(options =>
-            {
-                
-                options.SwaggerDoc($"v1", new OpenApiInfo { Title = "GiftQR API", Version = $"{ApiVersion.Default}" });
-
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-                {
-                    Description = "Authorization header using the bearer scheme",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header
-                });
-
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement()
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            },
-                            Scheme = "Bearer",
-                            In = ParameterLocation.Header
-                        },
-                        new List<string>()
-                    }
-                });
-            });
+            services.AddSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env/*, IApiVersionDescriptionProvider provider*/)
         {
             if (env.IsDevelopment())
             {
@@ -111,12 +104,8 @@ namespace GiftQR
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllers();
-            //});
 
             app.UseEndpoints(endpoints =>
             {
@@ -129,10 +118,10 @@ namespace GiftQR
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                foreach (var description in provider.ApiVersionDescriptions)
-                {
-                    c.SwaggerEndpoint($"{description.GroupName}/swagger.json",description.GroupName);
-                }
+                //foreach (var description in provider.ApiVersionDescriptions)
+                //{
+                //    c.SwaggerEndpoint($"{description.GroupName}/swagger.json",description.GroupName);
+                //}
             });
         }
     }

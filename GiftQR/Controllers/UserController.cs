@@ -12,15 +12,16 @@ using System.Threading.Tasks;
 namespace GiftQR.Controllers
 {
     [ApiController]
-    [ApiVersion("1.0")]
+    //[ApiVersion("1.0")]
     public class UserController : BaseApiController
     {
-        public UserController(IUnitOfWork unitOfWork, UserManager<User> userManager, SignInManager<User> signInManager,ILogger<UserController> logger)
-            : base(unitOfWork, userManager, signInManager,logger)
+        public UserController(IUnitOfWork unitOfWork, UserManager<User> userManager, SignInManager<User> signInManager, ILogger<UserController> logger)
+            : base(unitOfWork, userManager, signInManager, logger)
         {
         }
 
         //[AllowAnonymous]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet]
         public async Task<IActionResult> IsWorking()
         {

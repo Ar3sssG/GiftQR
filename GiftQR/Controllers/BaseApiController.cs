@@ -6,7 +6,8 @@ using Microsoft.Extensions.Logging;
 
 namespace GiftQR.Controllers
 {
-    [Route("v{version:apiVersion}/[controller]/[action]")]
+    //[Route("v{version:apiVersion}/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     public class BaseApiController : ControllerBase
     {
         protected readonly ILogger<BaseApiController> _logger;
